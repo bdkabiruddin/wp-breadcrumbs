@@ -45,7 +45,6 @@ function get_category_parents_exe( $id, $link = false, $nicename = false, $visit
 	return $chains;
 }
 
-
 function wp_breadcrumbs(){
 	
 	global $post;
@@ -61,7 +60,7 @@ function wp_breadcrumbs(){
 		if ( is_home() ) {
 			$breadcrumbs[] = array(
 				'title' => __('Blog'),
-				'link' => ''
+				'link' => null
 			);
 		} 
 		
@@ -81,19 +80,29 @@ function wp_breadcrumbs(){
 				$get_term_parents = get_category_parents_exe($term->term_id, true);
 				$get_term_parents = rtrim($get_term_parents, ',');
 				$term_parents = explode(',', $get_term_parents);
-				foreach($term_parents as $parents) {
+
+				$terms_count = count($term_parents);
+
+				foreach($term_parents as $key => $parents) {
 					$parents = explode('__/__', $parents);
-					$breadcrumbs[] = array(
-						'title' => $parents[0],
-						'link' => $parents[1]
-					);
+					if ($key < $terms_count-1){
+						$breadcrumbs[] = array(
+								'title' => $parents[0],
+								'link' =>  $parents[1]
+						);
+					} else {
+						$breadcrumbs[] = array(
+								'title' => $parents[0],
+								'link' => null
+						);
+					}
 				}
 				
 			}
 			if ( is_tag() ) {
 				$breadcrumbs[] = array(
 					'title' => single_tag_title('', false),
-					'link' => ''
+					'link' => null
 				);
 			}
 			if ( is_author() ) {
@@ -101,7 +110,7 @@ function wp_breadcrumbs(){
 				$userdata = get_userdata( $author );
 				$breadcrumbs[] = array(
 					'title' => __('Author: ') . $userdata->display_name,
-					'link' => ''
+					'link' => null
 				);
 			} 
 			
@@ -116,7 +125,7 @@ function wp_breadcrumbs(){
 				);
 				$breadcrumbs[] = array(
 					'title' => get_the_time('jS') . ' ' . get_the_time('M'),
-					'link' => ''
+					'link' => null
 				);
 			}
 			
@@ -127,14 +136,14 @@ function wp_breadcrumbs(){
 				);
 				$breadcrumbs[] = array(
 					'title' => get_the_time('M'),
-					'link' => ''
+					'link' => null
 				);
 			}
 			
 			if( is_year() ) {
 				$breadcrumbs[] = array(
 					'title' => get_the_time('Y'),
-					'link' => ''
+					'link' => null
 				);
 			}
 		}
@@ -150,21 +159,21 @@ function wp_breadcrumbs(){
 			
 			$breadcrumbs[] = array(
 				'title' => __('Page ') . get_query_var('paged'),
-				'link' => ''
+				'link' => null
 			);
 		} 
 		
 		 if ( is_search() ) {
 			 $breadcrumbs[] = array(
 				'title' => __('Search results for ') . get_search_query(),
-				'link' => ''
+				'link' => null
 			);
 		} 
 		
 		if ( is_404() ) {
 			$breadcrumbs[] = array(
 				'title' => __('Error 404'),
-				'link' => ''
+				'link' => null
 			);
 		}
 		
@@ -226,16 +235,15 @@ function wp_breadcrumbs(){
 						}
 						
 					}
-				
 					
 					$breadcrumbs[] = array(
 						'title' => $base_tex->name,
-						'link' => ''
+						'link' => get_term_link( $base_tex->term_id )
 					);
 				}
 				$breadcrumbs[] = array(
 					'title' => get_the_title(),
-					'link' => ''
+					'link' => null
 				);
 			}
 			
@@ -253,12 +261,13 @@ function wp_breadcrumbs(){
 					}
 					$breadcrumbs[] = array(
 						'title' => get_the_title(),
-						'link' => ''
+						'link' => null
 					);
+					
 				} else {
 					$breadcrumbs[] = array(
 						'title' => get_the_title(),
-						'link' => ''
+						'link' => null
 					);
 				}
 			}
