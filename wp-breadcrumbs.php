@@ -1,5 +1,13 @@
-
-
+/*
+Plugin Name:  Wp Breadcrumbs
+Plugin URI:   https://github.com/bdkabiruddin/wp-breadcrumbs/
+Description:  WordPress breadcrumbs.
+Version:      Version: 1.0.0
+Author: Md Kabir Uddin
+Author URI:   https://github.com/bdkabiruddin
+License:      
+License URI: 
+*/
 function getcategory_with_child($category){
 		$cats = array();
 		foreach ($category as $cat){
