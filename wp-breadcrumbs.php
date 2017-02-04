@@ -22,14 +22,15 @@ function getcategory_with_child($category){
 function get_category_parents_exe( $id, $link = false, $nicename = false, $visited = array() ) {
 	$chains = '';
 	$term = get_queried_object();
-
 	$parent = get_term( $id, $term->taxonomy );
 	if ( is_wp_error( $parent ) ){
 		return $parent;
 	}
-	if ( $nicename ){$name = $parent->slug;
+	if ( $nicename ){
+		$name = $parent->slug;
 	}
-	else{$name = $parent->name;
+	else{
+		$name = $parent->name;
 	}
 	if ( $parent->parent && ( $parent->parent != $parent->term_id ) && !in_array( $parent->parent, $visited ) ) {
 		$visited[] = $parent->parent;
@@ -44,13 +45,14 @@ function get_category_parents_exe( $id, $link = false, $nicename = false, $visit
 	return $chains;
 }
 
+
 function wp_breadcrumbs(){
+	
 	global $post;
 	
 	$breadcrumbs = array();
 	
 	if ( !is_front_page() ) {
-
 		$breadcrumbs[] = array(
 			'title' => 'Home',
 			'link' => home_url()
@@ -74,8 +76,9 @@ function wp_breadcrumbs(){
 			);
 			
 			if(is_category() || is_tax()){
-				$taxonomy = get_queried_object();
-				$get_term_parents = get_category_parents_exe($taxonomy->term_id, true);
+				$term = get_queried_object();
+				
+				$get_term_parents = get_category_parents_exe($term->term_id, true);
 				$get_term_parents = rtrim($get_term_parents, ',');
 				$term_parents = explode(',', $get_term_parents);
 				foreach($term_parents as $parents) {
@@ -85,15 +88,14 @@ function wp_breadcrumbs(){
 						'link' => $parents[1]
 					);
 				}
+				
 			}
-
 			if ( is_tag() ) {
 				$breadcrumbs[] = array(
 					'title' => single_tag_title('', false),
 					'link' => ''
 				);
 			}
-
 			if ( is_author() ) {
 				global $author;
 				$userdata = get_userdata( $author );
@@ -199,6 +201,7 @@ function wp_breadcrumbs(){
 							);
 						}
 						
+						
 					}
 				}
 				
@@ -208,17 +211,23 @@ function wp_breadcrumbs(){
 					
 					$taxonomy_terms = get_the_terms( $post->ID, $taxonomy );
 					$base_tex = $taxonomy_terms[0];
-					$term = get_term( $taxonomy_terms[0]->parent, $taxonomy );
-					$get_term_parents = get_category_parents_exe($term->term_id, true);
-					$get_term_parents = rtrim($get_term_parents, ',');
-					$term_parents = explode(',', $get_term_parents);
-					foreach($term_parents as $parents) {
-						$parents = explode('__/__', $parents);
-						$breadcrumbs[] = array(
-							'title' => $parents[0],
-							'link' => $parents[1]
-						);
+					if(count($taxonomy_terms) > 1){
+						$term = get_term( $taxonomy_terms[0]->parent, $taxonomy );
+						
+						$get_term_parents = get_category_parents_exe($term->term_id, true);
+						$get_term_parents = rtrim($get_term_parents, ',');
+						$term_parents = explode(',', $get_term_parents);
+						foreach($term_parents as $parents) {
+							$parents = explode('__/__', $parents);
+							$breadcrumbs[] = array(
+								'title' => $parents[0],
+								'link' => $parents[1]
+							);
+						}
+						
 					}
+				
+					
 					$breadcrumbs[] = array(
 						'title' => $base_tex->name,
 						'link' => ''
@@ -240,7 +249,7 @@ function wp_breadcrumbs(){
 						$breadcrumbs[] = array(
 							'title' => get_the_title($ancestor),
 							'link' => get_permalink($ancestor)
-						);	
+						);
 					}
 					$breadcrumbs[] = array(
 						'title' => get_the_title(),
