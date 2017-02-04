@@ -274,5 +274,19 @@ function wp_breadcrumbs(){
 		}
 	}
 	
-	return $breadcrumbs;
+	$output = '';
+	$output .= '<ol class="breadcrumb">';
+	foreach ($breadcrumbs as $key => $breadcrumb) {
+		$output .= '<li class="breadcrumb-item">'; 
+		if(!empty($breadcrumb['link'])){ 
+			$output .= '<a href="'.$breadcrumb['link'].'">';
+		}
+		$output .= $breadcrumb['title']; 
+		if(!empty($breadcrumb['link'])){
+			$output .= '</a>';
+		}
+		$output .= '</li> ';
+	}
+	$output .= '</ol>';
+	echo  $output;
 }
