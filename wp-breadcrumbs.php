@@ -275,16 +275,18 @@ function wp_breadcrumbs(){
 	}
 	
 	$output = '';
-	$output .= '<ol class="breadcrumb">';
+	$output .= '<ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">';
+	$breadcrumbs = array_combine(range(1, count($breadcrumbs)), $breadcrumbs);
 	foreach ($breadcrumbs as $key => $breadcrumb) {
-		$output .= '<li class="breadcrumb-item">'; 
+		$output .= '<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">'; 
 		if(!empty($breadcrumb['link'])){ 
-			$output .= '<a href="'.$breadcrumb['link'].'">';
+			$output .= '<a itemprop="item" href="'.$breadcrumb['link'].'">';
 		}
-		$output .= $breadcrumb['title']; 
+		$output .= '<span itemprop="name">'.$breadcrumb['title'].'</span>'; 
 		if(!empty($breadcrumb['link'])){
 			$output .= '</a>';
 		}
+		$output .= '<meta itemprop="position" content="'.$key.'" />';
 		$output .= '</li> ';
 	}
 	$output .= '</ol>';
