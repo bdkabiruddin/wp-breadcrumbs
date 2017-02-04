@@ -1,22 +1,23 @@
 # wp-breadcrumbs
 
 How to use
-
-<?php
+<pre>
+&lt;?php
 if(function_exists('wp_breadcrumbs')){
-	$html = '';
-	$breadcrumbs = wp_breadcrumbs();
-	$html .= '<ol class="breadcrumb">';
-	foreach ($breadcrumbs as $key => $breadcrumb) {
-		$html .= '<li class="breadcrumb-item">'; if(!empty($breadcrumb['link'])){ 
-			$html .= '<a href="'.$breadcrumb['link'].'">';
-		}
-		$html .= $breadcrumb['title']; if(!empty($breadcrumb['link'])){
-			$html .= '</a>';
-		}
-		$html .= '</li> ';
-	}
-	$html .= '</ol>';
-	echo $html;
+$html = '';
+$breadcrumbs = wp_breadcrumbs();
+$html .= '&lt;ol class="breadcrumb"&gt;';
+foreach ($breadcrumbs as $key =&gt; $breadcrumb) {
+$html .= '&lt;li class="breadcrumb-item"&gt;'; if(!empty($breadcrumb['link'])){
+$html .= '&lt;a href="'.$breadcrumb['link'].'"&gt;';
 }
-?>
+$html .= $breadcrumb['title']; if(!empty($breadcrumb['link'])){
+$html .= '&lt;/a&gt;';
+}
+$html .= '&lt;/li&gt; ';
+}
+$html .= '&lt;/ol&gt;';
+echo $html;
+}
+?&gt;
+</pre>
